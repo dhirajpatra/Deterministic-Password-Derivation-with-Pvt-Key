@@ -24,8 +24,8 @@ until a new spec version is released.
 All text becomes UTF-8 after normalization.
 
 - `S`: Unicode **NFKC**. MUST NOT trim, case-fold or collapse whitespace. Reject control characters (Unicode category Cc).
-- `site`: trim; strip scheme, credentials, path, query, port; strip a leading `www.`; convert to IDNA (punycode, UTS 46); lowercase with ASCII-only lowercasing after IDNA (avoids locale bugs such as Turkish dotless i). Then, per decision D1, reduce to the registrable domain (eTLD+1) using the Public Suffix List. Spec v1 pins one PSL snapshot date inside the spec; the snapshot only changes in a new spec version.
-- `user`: NFKC, trim leading/trailing whitespace, case preserved.
+- `site`: trim; strip an alphabetic scheme (`xyz://`), credentials (`user:pw@`), path, query, fragment and port; convert to ASCII with IDNA (UTS 46, which also lowercases), then ASCII-lowercase and drop trailing dots; drop one leading `www.` only if a dot remains afterwards; then, per decision D1, reduce to the registrable domain (eTLD+1) using the Public Suffix List. IPv4/IPv6 literals, single-label hosts such as `localhost`, and bare public suffixes keep the full host. **Pinned data:** v1 is defined against `idna 1.1.0` and `psl 2.1.245` (exact versions in `Cargo.toml`); updating either changes outputs for some sites and therefore requires a new spec version.
+- `user`: NFKC, **then** trim leading/trailing Unicode whitespace; control characters rejected; case preserved.
 - Empty `site` or `user` after normalization MUST be an error (use an explicit constant such as `-` if a site has no username; the constant is chosen by the caller, not by the library).
 - Length-prefix every variable-length field: `LP(x) = u32_be(len_in_bytes(x)) ‖ x`.
 

@@ -1,0 +1,11 @@
+[workspace]
+resolver = "2"
+members = ["crates/core", "crates/cli", "app/rust"]
+exclude = ["fuzz"]
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+strip = true
+overflow-checks = true

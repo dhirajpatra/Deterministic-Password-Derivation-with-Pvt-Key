@@ -1,0 +1,11 @@
+[package]
+name = "pwdx"
+version = "0.1.0"
+edition = "2021"
+description = "pwdx command-line tool: stateless, offline password derivation"
+license = "LicenseRef-TBD"
+
+[dependencies]
+pwdx-core = { path = "../core" }
+rpassword = "7"
+zeroize = "1"

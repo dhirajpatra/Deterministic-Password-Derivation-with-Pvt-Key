@@ -78,6 +78,7 @@ offset  size  field
 - Total 107 bytes: fits in a single QR code. File and QR are the only transfer mechanisms; no server ever sees it.
 - The backup passphrase is separate from the memorable password and must be strong. Make the UI say so.
 - Decryption failure and tampering must produce the same generic error.
+- A backup file is untrusted input: reject parameters outside `m_kib` 8192..262144, `t` 1..6, `p` 1..4 before running Argon2, so a crafted file cannot trigger a huge allocation.
 
 ## 5. Rotation and loss
 

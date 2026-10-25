@@ -1,0 +1,4 @@
+# Used by `flutter_rust_bridge_codegen generate` (run from the app/ directory).
+rust_input: crate::api
+rust_root: rust/
+dart_output: lib/src/rust

@@ -1,0 +1,30 @@
+[package]
+name = "pwdx-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+pwdx-core = { path = "../crates/core" }
+
+[[bin]]
+name = "openssh_import"
+path = "fuzz_targets/openssh_import.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "backup_import"
+path = "fuzz_targets/backup_import.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "site_normalize"
+path = "fuzz_targets/site_normalize.rs"
+test = false
+doc = false

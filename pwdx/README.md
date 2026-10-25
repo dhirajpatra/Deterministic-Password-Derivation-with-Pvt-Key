@@ -1,7 +1,7 @@
 # pwdx — stateless, offline password derivation
 
-> **Status:** pre-implementation. Spec v1 is a draft until test vectors are published and frozen.
-> `pwdx` is a placeholder name.
+> **Status:** Milestone 1 implemented (Rust core + CLI + test vectors). Spec v1 is still a *draft* until the open
+> decisions below are settled and the spec is frozen. `pwdx` is a placeholder name. Not yet independently reviewed.
 
 Type one memorable password; get a long, unique, reproducible password for every site. Nothing is stored
 except an encrypted key file, and nothing ever touches a network.
@@ -39,18 +39,48 @@ output  = unbiased encoding of `stream` into the chosen profile (rejection sampl
 
 Full normative detail: `skills/pwdx-derivation-spec/SKILL.md`.
 
-## Repository layout (planned)
+## Build and try it
+
+```
+cargo test --release --workspace   # 37 tests incl. 30 known-answer vectors from the independent Python reference
+cargo build --release           # target/release/pwdx  (~1.7 MB)
+pwdx key new                    # or: pwdx key import-ssh ~/.ssh/id_ed25519
+pwdx get github.com --user me@example.com
+python3 testvectors/reference.py   # regenerates testvectors/v1.json (pip install argon2-cffi)
+```
+
+Needs a recent stable Rust. The key file (`~/.config/pwdx/key.pwdxkey`, 107 bytes) is encrypted with its own
+passphrase and doubles as your backup; copy it to other devices.
+
+## Implementation status
+
+| Area | State |
+|---|---|
+| `pwdx-core`: normalization, derivation, 4 profiles, backup file, OpenSSH import, self-test | done, tested |
+| CLI (`key new`, `key import-ssh`, `key id`, `get`, `selftest`) | done, tested end to end against the Python reference |
+| Known-answer vectors (30 + 11 error cases), independent Python reference | done |
+| Statistical bias tests (chi-square, with a deliberately biased control that must be detected) | done |
+| Robustness: mutation tests for OpenSSH/backup parsers, normalizer property tests; cargo-fuzz targets in `fuzz/` | tests done; fuzz targets written, **not yet run** (need nightly) |
+| `cargo audit` | clean (it flagged `idna 0.5.0`; upgraded to 1.1.0); `cargo deny` policy written, not yet run |
+| CI workflow (`.github/workflows/ci.yml`) | written, **not yet run on GitHub**; app jobs marked `continue-on-error` until proven |
+| FFI bridge crate (`app/rust`) | done; all vectors pass through its API |
+| Flutter app (`app/lib`) | written and syntax-checked; **not compiled or run** (no Flutter SDK available) |
+| Static musl / Windows / macOS / Android / iOS builds | not yet built |
+| Independent security review | not yet |
+
+## Repository layout
 
 ```
 pwdx/
 ├── Cargo.toml                 # workspace
 ├── crates/
-│   ├── core/                  # pwdx-core: pure library, #![forbid(unsafe_code)], no network, no UI
-│   ├── cli/                   # static single-binary CLI
-│   └── ffi/                   # flutter_rust_bridge glue (cdylib/staticlib)
-├── app/                       # Flutter UI (Linux, Windows, Android, iOS)
-├── testvectors/               # frozen known-answer vectors (JSON)
-├── spec/                      # frozen spec versions (v1.md, ...)
+│   ├── core/                  # pwdx-core: pure library, #![forbid(unsafe_code)], no network, no UI   [done]
+│   ├── cli/                   # single-binary CLI                                                    [done]
+
+├── app/                       # Flutter UI + rust/ bridge crate (see app/README.md)
+├── testvectors/               # v1.json + reference.py (independent Python implementation)
+├── fuzz/                      # cargo-fuzz targets (nightly)
+├── scripts/                   # bootstrap_app.sh, check_android_no_network.sh
 └── skills/                    # implementation guides (this folder)
 ```
 
@@ -73,7 +103,7 @@ read them as normal docs or copy `skills/` into `.claude/skills/` to let Claude 
 
 | ID | Decision | Current default |
 |---|---|---|
-| D1 | Key sites by registrable domain (eTLD+1) or full host | eTLD+1 |
+| D1 | Key sites by registrable domain (eTLD+1) or full host. **Needs a decision:** eTLD+1 depends on a Public Suffix List snapshot, which we pin exactly, but it ties v1 to that list forever. Keying on the full host (minus `www.`) avoids that dependency | eTLD+1 (implemented, pinned) |
 | D2 | Final app name and bundle ids | `pwdx` placeholder |
 | D3 | Source license | undecided (own license; not derived from Spectre) |
 | D4 | Default profile and length | `full`, 24 characters |

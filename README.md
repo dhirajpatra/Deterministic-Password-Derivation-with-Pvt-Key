@@ -1,96 +1,41 @@
-# pwdx — stateless, offline password derivation
+# pwdx app (Flutter + Rust)
 
-> **Status:** pre-implementation. Spec v1 is a draft until test vectors are published and frozen.
-> `pwdx` is a placeholder name.
+Hand-written Flutter UI around the Rust bridge crate in `rust/` (package `rust_lib_pwdx_app`, a thin wrapper over
+`pwdx-core`). **Status: the Rust bridge is built and tested (all 30 vectors pass through its API); the Dart code is
+syntax-checked only. It has not been compiled or run, because the authoring environment had no Flutter SDK.**
+Expect a first round of small fixes (plugin API drift, platform scaffolding) when you build it.
 
-Type one memorable password; get a long, unique, reproducible password for every site. Nothing is stored
-except an encrypted key file, and nothing ever touches a network.
-
-```
-output = f( memorable password, secret key, site, username, counter, profile )
-```
-
-Same inputs → same output, on every platform, every time (idempotent).
-
-## Goals
-
-- **Deterministic and cross-platform.** One Rust core is the only implementation of the algorithm. Linux, Windows, Android and iOS must produce byte-identical output.
-- **Per-site passwords.** A site that leaks your password reveals nothing about your other sites.
-- **Key-file pepper.** A 256-bit secret key is mixed into every derivation, so a leaked derived password cannot be used to brute-force your memorable password without the key.
-- **Key sources.** A dedicated random key file (default) **and** import of an OpenSSH `id_ed25519` (required feature).
-- **Offline.** No server, no network permission, no telemetry, no stored passwords.
-- **Easy install.** Single static binary on desktop; app packages on mobile (same Rust core as a library).
-
-## Non-goals
-
-- Not a vault for arbitrary secrets (no stored passwords, notes, cards).
-- No cloud sync. Moving the key between devices is done with an encrypted file or QR code.
-- No claims of "unbreakable" or "quantum-proof". See `skills/pwdx-security-review`.
-
-## How it works (v1 summary)
+## Build
 
 ```
-salt    = SHA-256("pwdx/v1/salt" ‖ K)                         K = 32-byte secret seed
-stretch = Argon2id(NFKC(S), salt, m=64 MiB, t=3, p=1, 32 B)   S = memorable password
-master  = HMAC-SHA512(K, "pwdx/v1/master" ‖ stretch)
-stream  = HKDF-SHA512-Expand(master, "pwdx/v1/site" ‖ LP(site) ‖ LP(user) ‖ u32(counter) ‖ LP(profile), 1024)
-output  = unbiased encoding of `stream` into the chosen profile (rejection sampling + Fisher-Yates)
+bash scripts/bootstrap_app.sh        # once: platform scaffolding, patches, Dart bindings (read it first)
+cd app && flutter run -d linux       # or windows, macos, android, ios
+flutter test integration_test/vectors_test.dart -d linux    # the cross-platform idempotence gate
 ```
 
-Full normative detail: `skills/pwdx-derivation-spec/SKILL.md`.
+Manual equivalent of the bootstrap script: install `flutter_rust_bridge_codegen` at exactly the version in
+`rust/Cargo.toml` (2.13.0), run `flutter_rust_bridge_codegen create` in a scratch folder, copy `android/ ios/ linux/
+macos/ windows/ rust_builder/` into `app/` (keep our `lib/`, `rust/`, `pubspec.yaml`), apply `platform_patches/`,
+then `flutter pub get && flutter_rust_bridge_codegen generate`.
 
-## Repository layout (planned)
+## How it works
 
-```
-pwdx/
-├── Cargo.toml                 # workspace
-├── crates/
-│   ├── core/                  # pwdx-core: pure library, #![forbid(unsafe_code)], no network, no UI
-│   ├── cli/                   # static single-binary CLI
-│   └── ffi/                   # flutter_rust_bridge glue (cdylib/staticlib)
-├── app/                       # Flutter UI (Linux, Windows, Android, iOS)
-├── testvectors/               # frozen known-answer vectors (JSON)
-├── spec/                      # frozen spec versions (v1.md, ...)
-└── skills/                    # implementation guides (this folder)
-```
+- The 32-byte key lives in the Rust session (`Arc<KeySeed>`, zeroized on drop). Dart never holds a key object.
+- The OS keystore (Keychain / Android Keystore-backed storage / Credential Manager / libsecret) stores the key at rest,
+  behind biometrics or the screen-lock PIN where available (`local_auth`).
+- On first run you create a key (or import `id_ed25519`, or restore a backup) and **must** save an encrypted backup file.
+- The memorable password is cleared from its text field after each derivation; the result hides itself after 30 s.
+- The app locks when it goes to the background and after 2 minutes idle; an opaque cover hides app-switcher snapshots.
+- At start-up `selfTest()` runs one known-answer vector; if it fails, derivation is disabled.
 
-## Skills (implementation guides)
+## Known limitations (be honest about these)
 
-Each folder under `skills/` is a self-contained guide. They are written in the `SKILL.md` format, so you can
-read them as normal docs or copy `skills/` into `.claude/skills/` to let Claude Code use them while you build.
-
-| Skill | Read it when you are… |
-|---|---|
-| `pwdx-derivation-spec` | implementing or changing anything in the algorithm (normative) |
-| `pwdx-key-management` | handling the key file, OpenSSH import, backup/export, device transfer |
-| `pwdx-rust-core` | laying out crates, choosing dependencies, zeroizing secrets |
-| `pwdx-flutter-app` | building the UI, keystore integration, clipboard and screen hardening |
-| `pwdx-testing` | writing known-answer vectors, CI matrix, bias and Unicode tests |
-| `pwdx-release` | packaging, signing, distributing, versioning and freezing the spec |
-| `pwdx-security-review` | threat model, user guidance, pre-release review checklist |
-
-## Open decisions (please settle before freezing v1)
-
-| ID | Decision | Current default |
-|---|---|---|
-| D1 | Key sites by registrable domain (eTLD+1) or full host | eTLD+1 |
-| D2 | Final app name and bundle ids | `pwdx` placeholder |
-| D3 | Source license | undecided (own license; not derived from Spectre) |
-| D4 | Default profile and length | `full`, 24 characters |
-| D5 | Symbol set for `full` | `!@#$%^&*-_=+` (12 symbols) |
-| D6 | Local, non-secret site list (site, user, counter, profile, length) and its encrypted export | yes, optional |
-
-## Roadmap
-
-1. `pwdx-core` + spec v1 + test vectors + CLI
-2. Desktop apps (Linux, Windows) with key import and OS keystore
-3. Android, then iOS
-4. Backup/recovery flow, hardening, packaging
-5. Independent security review, then release
-
-## Honest limitations
-
-- Changing the memorable password or the key changes **every** derived password; you would have to rotate every site.
-- Losing the key file without a backup means losing every derived password.
-- Malware on a device that is unlocked can capture both the memorable password and the key.
-- Strength of the whole scheme is bounded by the memorable password if the key file is stolen.
+- **Dart strings cannot be zeroized.** The typed memorable password and the returned password live in the Dart heap
+  until garbage-collected, and the key bytes pass through Dart briefly when read from the keystore. For maximum
+  assurance on desktop, use the CLI (`pwdx get`), which reads and wipes secrets in Rust.
+- Android: `FLAG_SECURE` and a sensitive-flagged clipboard come from `platform_patches/android/MainActivity.kt`.
+  iOS: the local-only, expiring clipboard needs `PwdxSecureChannel.swift` wired into the app delegate (manual step).
+  Windows/Linux/macOS: plain clipboard (clipboard managers may record it) and no screenshot blocking yet.
+- The clipboard timer cannot run while the app is suspended in the background.
+- Saved-site list is local only; encrypted export of it (decision D6) and QR transfer of the backup are not built yet.
+- Plugin versions in `pubspec.yaml` are the ones the author knew; run `flutter pub upgrade` and fix API drift if needed.
