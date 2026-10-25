@@ -105,7 +105,7 @@ read them as normal docs or copy `skills/` into `.claude/skills/` to let Claude 
 |---|---|---|
 | D1 | Key sites by registrable domain (eTLD+1) or full host. **Needs a decision:** eTLD+1 depends on a Public Suffix List snapshot, which we pin exactly, but it ties v1 to that list forever. Keying on the full host (minus `www.`) avoids that dependency | eTLD+1 (implemented, pinned) |
 | D2 | Final app name and bundle ids | `pwdx` placeholder |
-| D3 | Source license | undecided (own license; not derived from Spectre) |
+| D3 | Source license | **decided:** PolyForm Noncommercial 1.0.0 (see `LICENSE`, `NOTICE`) |
 | D4 | Default profile and length | `full`, 24 characters |
 | D5 | Symbol set for `full` | `!@#$%^&*-_=+` (12 symbols) |
 | D6 | Local, non-secret site list (site, user, counter, profile, length) and its encrypted export | yes, optional |
@@ -124,3 +124,10 @@ read them as normal docs or copy `skills/` into `.claude/skills/` to let Claude 
 - Losing the key file without a backup means losing every derived password.
 - Malware on a device that is unlocked can capture both the memorable password and the key.
 - Strength of the whole scheme is bounded by the memorable password if the key file is stolen.
+
+## License
+
+Source-available under the [PolyForm Noncommercial License 1.0.0](LICENSE): anyone may use, modify and share the
+code for any noncommercial purpose; commercial use requires a separate license from the copyright holder.
+Note that this is not an OSI-approved "open source" license (those must allow commercial use). Third-party
+components keep their own licenses; see `NOTICE`.

@@ -59,4 +59,9 @@ Spec freeze process:
 
 ## 6. Licensing
 
-The code is original (not derived from Spectre or its GPL ports), so the license is your choice (decision D3). Check licenses of every dependency with `cargo deny` before choosing: permissive (MIT/Apache-2.0) is simplest for App Store distribution. The EFF wordlist license must be respected and recorded.
+Decision D3 is made: **PolyForm Noncommercial License 1.0.0** (`LICENSE`, with the required notice in `NOTICE`). It is
+source-available, not OSI "open source", so some channels will not accept it: F-Droid only hosts free/open-source
+software, and Apple App Store distribution of noncommercial-licensed code is allowed for the owner but re-distribution
+by others is limited by their own noncommercial restriction. Keep `NOTICE` (it carries the `Required Notice:` line that
+downstream users must pass on), include third-party notices in every binary release (for example via `cargo about`),
+and respect the EFF wordlist's CC BY 3.0 attribution. Dependency licenses are policed by `deny.toml`.
