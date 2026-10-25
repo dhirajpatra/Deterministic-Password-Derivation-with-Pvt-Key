@@ -39,6 +39,8 @@ output  = unbiased encoding of `stream` into the chosen profile (rejection sampl
 
 Full normative detail: `skills/pwdx-derivation-spec/SKILL.md`.
 
+**New here? Read [INSTALL.md](INSTALL.md)** for step-by-step install and run instructions (terminal and app).
+
 ## Build and try it
 
 ```
