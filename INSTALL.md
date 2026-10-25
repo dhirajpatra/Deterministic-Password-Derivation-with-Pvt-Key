@@ -59,6 +59,54 @@ Expected output: `selftest ok (spec v1)`. If it prints anything else, do not use
 
 Optional, if you want to run the project's own tests: `cargo test --release --workspace`.
 
+Your build puts the executable in the project's `target` folder. Copy it from there to any folder outside the project. It is self-contained, so you only need to copy the one file.
+
+**Linux or macOS**
+
+```bash
+# from the project folder (the one with Cargo.toml)
+mkdir -p ~/.local/bin
+cp target/release/pwdx ~/.local/bin/pwdx
+chmod +x ~/.local/bin/pwdx
+```
+
+To copy it to a different folder instead, replace `~/.local/bin/` with that path, for example `cp target/release/pwdx /path/to/MyTools/`.
+
+**Windows (PowerShell)**
+
+```powershell
+# from the project folder
+mkdir C:\Tools -Force
+copy target\release\pwdx.exe C:\Tools\pwdx.exe
+```
+
+Then add `C:\Tools` to your `PATH` (Settings > System > About > Advanced system settings > Environment Variables > Path > Edit > New) and open a new terminal.
+
+**Check it from any folder**
+
+Open a new terminal, move somewhere outside the project, and run:
+
+```bash
+cd ~          # Windows: cd $HOME
+pwdx selftest
+```
+
+You should see `selftest ok (spec v1)`. On Linux and macOS, if you get `command not found`, the folder isn't on your `PATH` yet. Add this line to `~/.bashrc` or `~/.zshrc`, then open a new terminal:
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+To skip the manual copying entirely, run this from the project folder. It builds pwdx and puts it in your Cargo bin folder, which is already on your `PATH`:
+
+```bash
+cargo install --path crates/cli --locked
+```
+
+Your key file is separate from the executable, so you can move, replace or delete the program without touching it. On Linux and macOS it is `~/.config/pwdx/key.pwdxkey`, and on Windows it is `%APPDATA%\pwdx\key.pwdxkey`. `pwdx key id` should still show the same Key ID after you switch to the copied program.
+
+If you copy the executable to another computer, it must be the same operating system and CPU type. A Linux build won't run on Windows. On a different Linux machine, an older distribution may be too old for it. In that case, build it there from source.
+
 ---
 
 ## 2. Terminal: first-time setup (create your key)
@@ -87,6 +135,42 @@ pwdx never overwrites an existing key file.
 
 **Back up the key file now** (USB stick, password manager attachment, another safe place). Without it, all your derived
 passwords are gone for good. Note the Key ID somewhere; it lets you check later that two devices hold the same key.
+
+If it's an SSH key, use `pwdx key import-ssh`.
+
+**Linux or macOS**
+
+```bash
+pwdx key import-ssh ~/.ssh/id_ed25519
+```
+
+**Windows (PowerShell)**
+
+```powershell
+pwdx key import-ssh $env:USERPROFILE\.ssh\id_ed25519
+```
+
+pwdx will then:
+1. Ask for the SSH key's passphrase, but only if the key has one.
+2. Ask you to choose a **new key-file passphrase** twice, at least 12 characters. This protects the saved copy and is different from your SSH passphrase.
+3. Print the **Key ID** and save the encrypted key file in the default location.
+
+Afterwards, back up that key file and note the Key ID. From then on, `pwdx get github.com --user me@example.com` uses this key.
+
+**Things to know**
+
+- **Ed25519 only.** The file must start with `-----BEGIN OPENSSH PRIVATE KEY-----` and be an Ed25519 key. RSA, ECDSA and hardware (`sk-`) keys are rejected. To check which type you have, run `ssh-keygen -l -f ~/.ssh/id_ed25519`, and look for `(ED25519)` at the end of the line.
+- **Another key.** If you want a different key, pass its path in place of `~/.ssh/id_ed25519`.
+- **Existing pwdx key file.** pwdx never overwrites one. If you already ran `pwdx key new`, either save the new import elsewhere with `--key`, or move the old key file aside first. Keep a backup of it, because deleting it loses those passwords.
+
+```bash
+pwdx key import-ssh ~/.ssh/id_work --key ~/pwdx-work.pwdxkey
+pwdx get github.com --user me@example.com --key ~/pwdx-work.pwdxkey
+```
+
+- **Already have a pwdx key file.** If you mean a key file created by pwdx on another device, don't import it. Copy it over, then point to it with `--key` or put it in the default location. The default location is `~/.config/pwdx/key.pwdxkey` on Linux and macOS, and `%APPDATA%\pwdx\key.pwdxkey` on Windows.
+
+Only the 32-byte seed of your SSH key is copied. Changing or deleting the SSH key later won't change your pwdx passwords. An SSH public key is published, so a dedicated key from `pwdx key new` is the stronger choice. The import works the same either way.
 
 ### 2b. Use your existing SSH key (`id_ed25519`)
 
