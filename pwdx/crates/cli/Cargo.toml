@@ -3,7 +3,7 @@ name = "pwdx"
 version = "0.1.0"
 edition = "2021"
 description = "pwdx command-line tool: stateless, offline password derivation"
-license = "PolyForm-Noncommercial-1.0.0"
+license = "MIT"
 
 [dependencies]
 pwdx-core = { path = "../core" }

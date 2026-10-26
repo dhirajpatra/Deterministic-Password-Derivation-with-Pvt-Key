@@ -1,0 +1,75 @@
+.TH @BIN@ 1 "@DATE@" "pwdx @VERSION@" "User Commands"
+.SH NAME
+@BIN@ \- stateless, offline password derivation
+.SH SYNOPSIS
+.B @BIN@ key new
+.br
+.B @BIN@ key import\-ssh
+.I FILE
+.br
+.B @BIN@ key id
+.br
+.B @BIN@ get
+.I SITE
+.B \-\-user
+.I USER
+.RB [ \-\-counter\ \fIN\fP ]
+.RB [ \-\-profile\ \fIPROFILE\fP ]
+.RB [ \-\-length\ \fIL\fP ]
+.br
+.B @BIN@ selftest
+.SH DESCRIPTION
+Turns one memorable password into a different, long, random\-looking password for every site. The same inputs always give
+the same output on every device. Nothing is stored or sent anywhere. A secret 256\-bit key, kept in an encrypted key file,
+is mixed into every derivation (Argon2id, HMAC\-SHA512, HKDF).
+.PP
+Secrets are read only from a hidden terminal prompt, never from arguments or environment variables.
+.SH COMMANDS
+.TP
+.B key new
+Create a new random key and save it encrypted under a key\-file passphrase.
+.TP
+.BI "key import\-ssh " FILE
+Import the seed of an OpenSSH Ed25519 private key (plain or passphrase\-protected).
+.TP
+.B key id
+Print the key's non\-secret 8\-character Key ID.
+.TP
+.BI "get " SITE
+Derive and print the password for SITE.
+.TP
+.B selftest
+Run a built\-in known\-answer check.
+.SH OPTIONS
+.TP
+.BI \-\-user " USER"
+Username or email for the site (required).
+.TP
+.BI \-\-counter " N"
+Rotation counter, starting at 1.
+.TP
+.BI \-\-profile " PROFILE"
+One of full (default), alnum, passphrase, pin.
+.TP
+.BI \-\-length " L"
+Length in characters (words for passphrase).
+.TP
+.BI \-\-key " PATH"
+Key file to use.
+.TP
+.B \-\-stdin
+Read secrets from standard input (for automation and tests).
+.SH FILES
+.TP
+.I ~/.config/pwdx/key.pwdxkey
+Default encrypted key file (also your backup). Overridden by \fB\-\-key\fP or $PWDX_KEY_FILE.
+.SH EXAMPLES
+.nf
+@BIN@ key new
+@BIN@ get github.com \-\-user me@example.com
+.fi
+.SH NOTES
+Changing the memorable password or the key changes every derived password. Without a backup of the key file, derived
+passwords cannot be recovered.
+.SH COPYRIGHT
+Copyright (c) 2026 Dhiraj Patra. Released under the MIT License. There is NO WARRANTY.

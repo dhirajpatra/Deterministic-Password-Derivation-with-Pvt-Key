@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Dhiraj Patra
+# SPDX-License-Identifier: MIT
 # Fails if a release APK declares the INTERNET permission (the app must be fully offline).
 # Usage: scripts/check_android_no_network.sh path/to/app-release.apk
 set -euo pipefail

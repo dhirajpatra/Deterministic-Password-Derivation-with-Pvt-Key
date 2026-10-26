@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Encrypted key backup / transfer file (107 bytes, see `skills/pwdx-key-management`).
 //!
 //! ```text

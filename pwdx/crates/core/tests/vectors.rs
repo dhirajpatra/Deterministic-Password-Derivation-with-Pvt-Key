@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Known-answer tests: every vector in testvectors/v1.json must reproduce exactly.
 //! The expected values were produced by the independent Python reference (testvectors/reference.py).
 

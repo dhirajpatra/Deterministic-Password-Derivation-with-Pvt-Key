@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! pwdx core: deterministic, offline password derivation (spec v1).
 //!
 //! One implementation, used by every platform. No network, no logging, no `unsafe`.

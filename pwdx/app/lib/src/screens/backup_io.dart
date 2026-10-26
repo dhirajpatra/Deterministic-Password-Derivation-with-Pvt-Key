@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 import 'dart:io';
 import 'dart:typed_data';
 

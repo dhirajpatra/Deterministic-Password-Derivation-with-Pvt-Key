@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';

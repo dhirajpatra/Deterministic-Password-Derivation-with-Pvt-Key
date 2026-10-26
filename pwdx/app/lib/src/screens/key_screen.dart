@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 import 'package:flutter/material.dart';
 
 import '../app.dart';
@@ -108,7 +110,8 @@ class _KeyScreenState extends State<KeyScreen> {
             child: Text(
               'Good to know: changing your memorable password or your key changes every derived password, so you would have '
               'to update every site. A thief who gets both your key file and one of your derived passwords can try to guess your '
-              'memorable password offline, so make it a long passphrase (4+ random words).',
+              'memorable password offline, so make it a long passphrase (4+ random words).\n\n'
+              'pwdx is free software released under the MIT License and comes with no warranty.',
             ),
           ),
         ],

@@ -59,9 +59,10 @@ Spec freeze process:
 
 ## 6. Licensing
 
-Decision D3 is made: **PolyForm Noncommercial License 1.0.0** (`LICENSE`, with the required notice in `NOTICE`). It is
-source-available, not OSI "open source", so some channels will not accept it: F-Droid only hosts free/open-source
-software, and Apple App Store distribution of noncommercial-licensed code is allowed for the owner but re-distribution
-by others is limited by their own noncommercial restriction. Keep `NOTICE` (it carries the `Required Notice:` line that
-downstream users must pass on), include third-party notices in every binary release (for example via `cargo about`),
-and respect the EFF wordlist's CC BY 3.0 attribution. Dependency licenses are policed by `deny.toml`.
+Decision D3 is made: **MIT** (`LICENSE`, copyright and third-party list in `NOTICE`, an `SPDX-License-Identifier: MIT` line in
+every first-party source file). It meets the Debian Free Software Guidelines, so Debian/Ubuntu packaging, F-Droid and the app
+stores are all possible. The only obligation on users is to keep the copyright notice and license text. There is no copyleft
+and no restriction on commercial use: anyone may build a closed-source product from this code. MIT has no explicit patent
+grant; Apache-2.0 would add one (a one-file swap if you ever want it). Every binary release must ship `LICENSE`, `NOTICE` and
+`THIRD_PARTY_LICENSES.txt` (generate with `python3 scripts/gen_third_party_licenses.py`; the .deb build does it). Keep the EFF
+wordlist's CC BY 3.0 attribution. Dependency licenses are policed by `deny.toml`.

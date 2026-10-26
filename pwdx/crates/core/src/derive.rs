@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Derivation and encoding (spec v1 sections 3-6).
 
 use crate::error::Error;

@@ -49,6 +49,20 @@ Make sure `~/.local/bin` is on your `PATH` (new terminals on most distributions 
 
    To build without installing: `cargo build --release`, then use `target/release/pwdx` (`target\release\pwdx.exe` on Windows).
 
+### Option C: apt (Debian, Ubuntu and derivatives), once a repository has been published
+
+If the maintainer publishes an apt repository (see `packaging/deb/README.md`), installation is:
+
+```bash
+sudo install -d -m 0755 /usr/share/keyrings
+curl -fsSL https://YOUR-HOST/apt/pwdx-archive-keyring.gpg | sudo tee /usr/share/keyrings/pwdx-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/pwdx-archive-keyring.gpg] https://YOUR-HOST/apt ./" | sudo tee /etc/apt/sources.list.d/pwdx.list
+sudo apt update && sudo apt install pwdx-cli
+```
+
+(`YOUR-HOST` is the maintainer's address.) With this route the command is called **`pwdx-cli`**, not `pwdx`, because Debian and
+Ubuntu already have a different program named `pwdx`. Use `pwdx-cli` everywhere this guide says `pwdx`.
+
 ### Check the installation
 
 ```bash
@@ -261,6 +275,7 @@ device and in the app on another: the derived password must be identical. If it 
 
 | Symptom | Likely cause and fix |
 |---|---|
+| `pwdx: invalid process id: selftest` (or similar) | You are running a **different program**: Debian/Ubuntu ship their own `/usr/bin/pwdx` (from `procps`). Run `type -a pwdx` to see which one comes first, put the folder with this pwdx earlier in `PATH`, or call it by its full path. The apt package avoids this by naming the command `pwdx-cli`. |
 | `command not found: pwdx` | Folder with the binary is not on `PATH`. Open a new terminal, or use the full path. |
 | `selftest` fails | Broken build. Rebuild with a current stable Rust (`rustup update`); do not use the binary. |
 | `error: decryption failed` | Wrong key-file passphrase, or the file is damaged. Retype it carefully; try your backup copy. |

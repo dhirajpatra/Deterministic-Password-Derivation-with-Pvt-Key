@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Dhiraj Patra
+# SPDX-License-Identifier: MIT
 """Regenerates app/integration_test/vectors_data.dart from testvectors/v1.json (single source of truth).
 CI re-runs this and fails if the committed file differs."""
 import json, os

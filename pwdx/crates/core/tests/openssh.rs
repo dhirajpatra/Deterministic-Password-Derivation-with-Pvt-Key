@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! OpenSSH import against fixtures made with the real ssh-keygen. Expected seeds come from an independent
 //! implementation (Python `cryptography`). The fixture keys are throwaway test keys.
 

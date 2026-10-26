@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! pwdx CLI. Secrets are read from a no-echo terminal prompt (or from stdin with `--stdin`, for automation).
 //! They are never accepted as arguments or environment variables.
 
@@ -25,6 +27,8 @@ OPTIONS:
 
 The key file is encrypted with a passphrase (Argon2id + XChaCha20-Poly1305) and is also your backup:
 copy it to other devices. Keep a copy somewhere safe: without it every derived password is lost.
+
+pwdx is free software released under the MIT License and comes with NO WARRANTY; see the LICENSE file.
 ";
 
 struct Opts {

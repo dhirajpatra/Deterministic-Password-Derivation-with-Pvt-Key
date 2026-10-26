@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Import of an OpenSSH `id_ed25519` private key (`openssh-key-v1`), plain or passphrase-protected.
 
 use crate::error::Error;

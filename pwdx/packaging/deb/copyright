@@ -1,0 +1,38 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: pwdx
+Source: https://github.com/dhirajpatra
+
+Files: *
+Copyright: 2026 Dhiraj Patra
+License: Expat
+
+Files: crates/core/data/eff_large_wordlist.txt
+Copyright: Electronic Frontier Foundation
+License: CC-BY-3.0-US
+Comment: See WORDLIST-LICENSE.txt. https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
+
+License: Expat
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+License: CC-BY-3.0-US
+ Licensed under the Creative Commons Attribution 3.0 United States license.
+ The full legal code is at https://creativecommons.org/licenses/by/3.0/us/legalcode
+ .
+ The statically linked Rust crates (MIT, Apache-2.0, BSD, Unicode and similar
+ licenses) are listed with their full notices in THIRD_PARTY_LICENSES.txt.gz.

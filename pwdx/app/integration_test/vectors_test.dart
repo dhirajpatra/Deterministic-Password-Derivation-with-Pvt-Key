@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 // The cross-platform idempotence gate: every known-answer vector must reproduce exactly through the real
 // Rust library on the platform this test runs on (Linux, Windows, macOS, Android emulator, iOS simulator).
 import 'dart:convert';

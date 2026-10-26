@@ -3,7 +3,7 @@ name = "rust_lib_pwdx_app"
 version = "0.1.0"
 edition = "2021"
 description = "flutter_rust_bridge glue for pwdx-core (thin: no logic of its own)"
-license = "PolyForm-Noncommercial-1.0.0"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "staticlib", "rlib"]

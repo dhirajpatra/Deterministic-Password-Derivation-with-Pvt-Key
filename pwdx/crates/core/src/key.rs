@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! The 32-byte secret seed `K` (see `skills/pwdx-key-management`).
 
 use crate::error::Error;

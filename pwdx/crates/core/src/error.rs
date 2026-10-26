@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Error type. Variants never carry secret data and messages are deliberately generic.
 
 use core::fmt;

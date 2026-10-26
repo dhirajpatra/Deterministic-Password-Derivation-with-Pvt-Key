@@ -1,4 +1,6 @@
 #![no_main]
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 use libfuzzer_sys::fuzz_target;
 
 fuzz_target!(|data: &[u8]| {

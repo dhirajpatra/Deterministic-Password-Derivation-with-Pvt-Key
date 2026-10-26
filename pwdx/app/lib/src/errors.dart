@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 import 'rust/api.dart' as rust;
 
 /// Turns any error into a short, non-secret message for the user.

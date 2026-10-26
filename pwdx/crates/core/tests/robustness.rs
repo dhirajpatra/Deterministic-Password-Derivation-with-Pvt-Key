@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Mutation-based robustness tests for the parsers (a stable-Rust complement to the cargo-fuzz targets in `fuzz/`).
 //! Properties: never panic; and if a mutated key file still parses, it must yield the *same* seed (integrity).
 

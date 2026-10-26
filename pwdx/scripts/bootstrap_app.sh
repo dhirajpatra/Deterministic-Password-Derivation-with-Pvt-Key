@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Dhiraj Patra
+# SPDX-License-Identifier: MIT
 # One-time setup of the Flutter platform scaffolding around the hand-written code in app/.
 #
 # STATUS: written but NOT yet run end-to-end (the author's sandbox has no Flutter SDK). Read it before running;

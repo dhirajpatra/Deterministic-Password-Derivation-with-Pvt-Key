@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Dhiraj Patra
+# SPDX-License-Identifier: MIT
 """Independent reference implementation of pwdx spec v1 (documentation + vector generator).
 
 Not shipped. It deliberately shares no code with the Rust core. Site normalization is NOT

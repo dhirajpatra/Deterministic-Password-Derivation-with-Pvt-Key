@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! Input normalization (spec v1 section 2). All normalization lives here, never in a UI layer.
 
 use crate::error::Error;

@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 //! The API exposed to Dart. Keep it small and dumb: all logic lives in `pwdx-core`.
 //!
 //! Key handling model: the 32-byte key lives in a Rust-side *session* (`Arc<KeySeed>`, zeroized when the last

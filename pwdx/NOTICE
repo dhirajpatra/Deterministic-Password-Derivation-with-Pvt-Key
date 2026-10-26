@@ -1,15 +1,13 @@
-Required Notice: Copyright (c) 2026 Dhiraj Patra (https://github.com/dhirajpatra)
+pwdx
+Copyright (c) 2026 Dhiraj Patra (https://github.com/dhirajpatra)
 
-pwdx is licensed under the PolyForm Noncommercial License 1.0.0. See the LICENSE file, or
-https://polyformproject.org/licenses/noncommercial/1.0.0
+pwdx is released under the MIT License (see the LICENSE file). SPDX-License-Identifier: MIT
 
-In short: you may use, copy, modify and share this software for any noncommercial purpose. Commercial use needs
-a separate license from the copyright holder.
-
-Third-party material (not covered by the PolyForm license; each keeps its own terms):
+Third-party material (each keeps its own license; none of it is changed by the MIT license):
 
 - crates/core/data/eff_large_wordlist.txt: EFF Large Wordlist for passphrases, (c) Electronic Frontier Foundation,
   licensed CC BY 3.0 US (https://creativecommons.org/licenses/by/3.0/us/). See crates/core/data/WORDLIST-LICENSE.txt.
-- Rust dependencies (argon2, hkdf, hmac, sha2, ssh-key, chacha20poly1305, idna, psl, flutter_rust_bridge, ...)
-  and Flutter packages are used under their own licenses (mostly MIT and/or Apache-2.0). When you distribute a
-  built binary or app, include their license notices (for example by generating them with `cargo about`).
+- Rust dependencies (argon2, hkdf, hmac, sha2, ssh-key, chacha20poly1305, idna, psl, flutter_rust_bridge, ...) and
+  Flutter packages are used under their own licenses (MIT, Apache-2.0, BSD, Unicode and similar). Run
+  `python3 scripts/gen_third_party_licenses.py` to produce THIRD_PARTY_LICENSES.txt with the notices that must
+  accompany a built binary; the Debian package build does this automatically.

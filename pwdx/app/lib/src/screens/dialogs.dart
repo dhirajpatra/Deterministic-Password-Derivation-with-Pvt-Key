@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Dhiraj Patra
+// SPDX-License-Identifier: MIT
 import 'package:flutter/material.dart';
 
 /// Asks for a passphrase. Returns null if cancelled. With [confirm] the user must type it twice.
