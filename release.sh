@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: MIT
 # One command to build, sign and stage a release of the apt repository.
 #
-#   MAINTAINER="Your Name <you@example.com>" GPG_KEY=<fingerprint> \
-#   REPO_URL=https://apt.example.com/pwdx  bash packaging/deb/release.sh
+#   MAINTAINER="Your Name dhiraj.patra@gmail.com" GPG_KEY=3D93F64918CBBD3B580A4418D52F43A7C1D85283 \
+#   REPO_URL=https://dhirajpatra.github.io/pwdx-apt  bash packaging/deb/release.sh
 #
 # Optional:
 #   REPO_DIR=apt-repo      where the repository is staged (older .deb files kept there stay installable)
@@ -15,9 +15,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
-: "${MAINTAINER:?set MAINTAINER=\"Your Name <you@example.com>\"}"
-: "${GPG_KEY:?set GPG_KEY=<your signing key fingerprint> (gpg --list-keys --with-colons | awk -F: '/^fpr/ {print \$10; exit}')}"
-: "${REPO_URL:?set REPO_URL=https://your-host/path (where the repo folder will be served)}"
+: "${MAINTAINER:?set MAINTAINER=\"Your Name dhiraj.patra@gmail.com\"}"
+: "${GPG_KEY:?set GPG_KEY=3D93F64918CBBD3B580A4418D52F43A7C1D85283 (gpg --list-keys --with-colons | awk -F: '/^fpr/ {print \$10; exit}')}"
+: "${REPO_URL:?set REPO_URL=https://dhirajpatra.github.io/pwdx-apt (where the repo folder will be served)}"
 REPO_DIR="${REPO_DIR:-apt-repo}"
 PKG="${PKG_NAME:-pwdx-cli}"
 REPO_URL="${REPO_URL%/}"

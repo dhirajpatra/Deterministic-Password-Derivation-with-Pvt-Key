@@ -11,6 +11,8 @@ There is no vault, no server and no cloud, and nothing you type is ever stored o
 
 Each password is derived on your own machine from your memorable password, the site and your username, and mixed with a secret 256-bit key that never leaves your devices. A site that leaks its copy reveals nothing about your other accounts, and nobody can guess your memorable password from a leaked one without also stealing your key file. It is built on a single Rust core using Argon2id, HMAC-SHA512 and HKDF, with the algorithm fully specified and checked against known-answer vectors from an independent implementation. The command-line tool works today, and a Flutter app for desktop and mobile is in progress.
 
+For installation from APT follow the instruction (here[https://dhirajpatra.github.io/pwdx-apt/]). 
+
 ```
 output = f( memorable password, secret key, site, username, counter, profile )
 ```
