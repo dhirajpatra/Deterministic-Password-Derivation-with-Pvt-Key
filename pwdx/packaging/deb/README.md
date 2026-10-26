@@ -2,6 +2,17 @@
 
 Goal: users on Debian, Ubuntu and derivatives install with `apt`, without GitHub and without building anything.
 
+## Quick path (two commands)
+
+```bash
+MAINTAINER="Your Name <you@example.com>" GPG_KEY=<your-key-fingerprint> REPO_URL=https://your-host/path bash packaging/deb/release.sh
+# upload everything inside ./apt-repo/ so that https://your-host/path/InRelease works, then:
+bash packaging/deb/verify-published.sh https://your-host/path      # installs it in clean Ubuntu containers (needs Docker)
+```
+
+`release.sh` runs the tests, builds the package, builds and signs the repository, and writes a landing page (`index.html`)
+with the install commands and your key fingerprint. The numbered sections below explain each piece.
+
 ## What is and is not possible
 
 | Route | Result | Verdict |
