@@ -1,6 +1,10 @@
-# pwdx — stateless, offline password derivation
+# pwdx — Stateless, Offline Password Derivation
 
-pwdx turns one password you can remember into a different, long, random-looking password for every site, and the same input always gives the same result on every device. There is no vault, no server and no cloud, and nothing you type is ever stored or sent anywhere. Each password is derived on your own machine from your memorable password, the site and your username, and mixed with a secret 256-bit key that never leaves your devices. A site that leaks its copy reveals nothing about your other accounts, and nobody can guess your memorable password from a leaked one without also stealing your key file. It is built on a single Rust core using Argon2id, HMAC-SHA512 and HKDF, with the algorithm fully specified and checked against known-answer vectors from an independent implementation. The command-line tool works today, and a Flutter app for desktop and mobile is in progress. It is free for noncommercial use under the PolyForm Noncommercial license.
+pwdx turns one password you can remember into a different, long, random-looking password for every site, and the same input always gives the same result on every device. 
+
+There is no vault, no server and no cloud, and nothing you type is ever stored or sent anywhere. Each password is derived on your own machine from your memorable password, the site and your username, and mixed with a secret 256-bit key that never leaves your devices. 
+
+A site that leaks its copy reveals nothing about your other accounts, and nobody can guess your memorable password from a leaked one without also stealing your key file. It is built on a single Rust core using Argon2id, HMAC-SHA512 and HKDF, with the algorithm fully specified and checked against known-answer vectors from an independent implementation. The command-line tool works today, and a Flutter app for desktop and mobile is in progress. 
 
 > **Status:** Milestone 1 implemented (Rust core + CLI + test vectors). Spec v1 is still a *draft* until the open
 > decisions below are settled and the spec is frozen. `pwdx` is a placeholder name. Not yet independently reviewed.
