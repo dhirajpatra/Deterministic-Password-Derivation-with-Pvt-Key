@@ -1,5 +1,11 @@
 # pwdx — Stateless, Offline Password Derivation
 
+## How to Use 
+
+Instruction site (here[https://dhirajpatra.github.io/pwdx-apt/])
+
+## How it works or want to contribute
+
 > **Status:** Milestone 1 implemented (Rust core + CLI + test vectors). Spec v1 is still a *draft* until the open
 > decisions below are settled and the spec is frozen. `pwdx` is a placeholder name. Not yet independently reviewed.
 
