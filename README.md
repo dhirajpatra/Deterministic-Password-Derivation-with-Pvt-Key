@@ -146,3 +146,7 @@ pwdx is released under the **MIT License** (see [LICENSE](LICENSE)). You may use
 sublicense and sell it, for any purpose, including commercial use, as long as the copyright notice and license text are kept.
 There is no warranty. MIT meets the Debian Free Software Guidelines, so the program can be packaged for Debian and Ubuntu.
 Third-party components keep their own licenses; see [NOTICE](NOTICE).
+
+## Liability and Warranty
+
+pwdx is provided “as is”, with no warranty. You are responsible for backing up your key file, keeping your passwords secret, and using it lawfully. If you lose your key and have no backup, nobody can recover your passwords. The author is not liable for any loss or damage from its use.
