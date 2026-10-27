@@ -63,6 +63,23 @@ sudo apt update && sudo apt install pwdx-cli
 (`YOUR-HOST` is the maintainer's address.) With this route the command is called **`pwdx-cli`**, not `pwdx`, because Debian and
 Ubuntu already have a different program named `pwdx`. Use `pwdx-cli` everywhere this guide says `pwdx`.
 
+### Option D: Windows (prebuilt `pwdx.exe`)
+
+Unzip `pwdx-0.1.0-windows-x86_64.zip` anywhere (for example `C:\Tools\pwdx`). There is nothing to install. Open PowerShell in
+that folder and run:
+
+```powershell
+.\pwdx.exe selftest                 # expect: selftest ok (spec v1)
+.\pwdx.exe key new
+.\pwdx.exe get github.com --user you@example.com
+```
+
+Add the folder to `PATH` if you want to type `pwdx` from anywhere. The key file is saved at `%APPDATA%\pwdx\key.pwdxkey`, and it
+is the same file format as on Linux, so you can copy it between systems. The program is not code-signed, so SmartScreen may warn
+you: choose *More info > Run anyway* only if the SHA-256 matches (`Get-FileHash <zip> -Algorithm SHA256`). You can also run the
+Linux apt package inside **WSL** (Ubuntu on Windows); the command there is `pwdx-cli`, and its key file lives inside WSL.
+To build the exe yourself on Windows, use Option B.
+
 ### Check the installation
 
 ```bash
