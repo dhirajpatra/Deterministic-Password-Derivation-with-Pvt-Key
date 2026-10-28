@@ -1,0 +1,88 @@
+# Builds the Flutter app for Windows, Android and Linux and uploads the results as downloadable artifacts.
+# Run it by hand: GitHub > Actions > app-release > Run workflow. Download from the run page ("Artifacts").
+#
+# UNVERIFIED: written without access to a Flutter SDK. If a step fails, open the log and send the error text.
+name: app-release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["app-v*"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: bash scripts/bootstrap_app.sh
+      - run: cd app && flutter build windows --release
+      - name: Package
+        shell: pwsh
+        run: |
+          $out = "pwdx-app-windows-x64"
+          New-Item -ItemType Directory -Force $out | Out-Null
+          Copy-Item -Recurse app\build\windows\x64\runner\Release\* $out
+          Copy-Item LICENSE, NOTICE $out
+          Compress-Archive -Path $out -DestinationPath "$out.zip"
+          (Get-FileHash "$out.zip" -Algorithm SHA256).Hash.ToLower() + "  $out.zip" | Out-File -Encoding ascii "$out.zip.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pwdx-app-windows-x64
+          path: |
+            pwdx-app-windows-x64.zip
+            pwdx-app-windows-x64.zip.sha256
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: "aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android" }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: bash scripts/bootstrap_app.sh
+      - run: cd app && flutter build apk --release
+      - name: The release APK must not request INTERNET
+        run: bash scripts/check_android_no_network.sh app/build/app/outputs/flutter-apk/app-release.apk
+      - name: Checksum
+        run: |
+          cp app/build/app/outputs/flutter-apk/app-release.apk pwdx-app-android.apk
+          sha256sum pwdx-app-android.apk > pwdx-app-android.apk.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pwdx-app-android
+          path: |
+            pwdx-app-android.apk
+            pwdx-app-android.apk.sha256
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev libsecret-1-dev libjsoncpp-dev
+      - run: bash scripts/bootstrap_app.sh
+      - run: cd app && flutter build linux --release
+      - name: Package
+        run: |
+          mkdir pwdx-app-linux-x64 && cp -r app/build/linux/x64/release/bundle/* pwdx-app-linux-x64/ && cp LICENSE NOTICE pwdx-app-linux-x64/
+          tar czf pwdx-app-linux-x64.tar.gz pwdx-app-linux-x64 && sha256sum pwdx-app-linux-x64.tar.gz > pwdx-app-linux-x64.tar.gz.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pwdx-app-linux-x64
+          path: |
+            pwdx-app-linux-x64.tar.gz
+            pwdx-app-linux-x64.tar.gz.sha256

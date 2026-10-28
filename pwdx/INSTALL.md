@@ -281,6 +281,37 @@ The **key icon** opens *Key*: your Key ID, *Export encrypted backup*, *Run self-
 - On the new device: first start > **Restore from a backup file**, pick the file, enter its passphrase.
 - Check that both devices show the **same Key ID** under *Key*.
 
+### 5.8 Use the key you already made (for example on Ubuntu) on your phone or the Windows app
+
+Your key is the file created by `pwdx key new` or `pwdx key import-ssh` (on Ubuntu with the apt package: `pwdx-cli`). The app
+reads that same file, so you never create a second key. **Do not tap "Create a new key" on the phone or in the Windows app:**
+that makes a different key and you would get different passwords.
+
+1. **On Ubuntu, find the file and note its Key ID** (the first path applies if you used the default location):
+
+   ```bash
+   ls -l ~/.config/pwdx/key.pwdxkey
+   pwdx-cli key id            # asks for the key-file passphrase; prints 8 characters, for example 62965643
+   ```
+
+2. **Copy the file to the other device with a method you control.** The file is encrypted, but treat it as sensitive.
+   - Android over a USB cable: copy it into the phone's *Download* folder with the file manager, or
+     `adb push ~/.config/pwdx/key.pwdxkey /sdcard/Download/` (USB debugging on).
+   - Android or any phone, wirelessly: KDE Connect, Warpinator, Bluetooth, or Nearby Share.
+   - iPhone: AirDrop or the Files app.
+   - Windows PC: USB stick, or copy it over your local network.
+   - Avoid email, chat apps and public cloud folders.
+3. **In the app:** first start, then **Restore from a backup file**, pick the file, and enter the **same key-file passphrase** you
+   chose on Ubuntu (the app calls it the backup passphrase). On later starts the app unlocks with your fingerprint or screen lock.
+4. **Check:** in the app open the key icon, then *Key*. The **Key ID must equal** the one from step 1.
+5. **Test:** derive a password for any site with the same memorable password, site, username, counter, type and length you used on
+   Ubuntu. It must be identical.
+6. **Clean up:** delete the copy in *Download* (`adb shell rm /sdcard/Download/key.pwdxkey`, or use the file manager) once the app has
+   restored it. The key now lives in the phone's secure storage. Keep your own backups of the original file in a safe place.
+
+Only have your SSH key (`id_ed25519`) and no pwdx key file? Make the key file on Ubuntu first with `pwdx-cli key import-ssh ~/.ssh/id_ed25519`, then follow the steps above.
+That is safer than copying your SSH private key to the phone.
+
 ---
 
 ## 6. Check that two devices agree

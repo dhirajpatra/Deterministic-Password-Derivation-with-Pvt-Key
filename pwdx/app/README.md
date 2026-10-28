@@ -18,6 +18,14 @@ Manual equivalent of the bootstrap script: install `flutter_rust_bridge_codegen`
 macos/ windows/ rust_builder/` into `app/` (keep our `lib/`, `rust/`, `pubspec.yaml`), apply `platform_patches/`,
 then `flutter pub get && flutter_rust_bridge_codegen generate`.
 
+## Build without installing Flutter (GitHub Actions)
+
+Push the whole project to a GitHub repository (the app needs the folders next to `app/`). Then open **Actions > app-release >
+Run workflow**. When it finishes, download from the run page, under *Artifacts*: `pwdx-app-windows-x64` (zip),
+`pwdx-app-android` (APK, signed with Flutter's debug key, fine for installing on your own phone) and `pwdx-app-linux-x64`
+(tar.gz). Each comes with a `.sha256` file. The workflow is unverified: if a job fails, send the error text from its log.
+Windows needs the Microsoft Visual C++ Redistributable installed (most PCs already have it).
+
 ## How it works
 
 - The 32-byte key lives in the Rust session (`Arc<KeySeed>`, zeroized on drop). Dart never holds a key object.
